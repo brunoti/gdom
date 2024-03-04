@@ -1,20 +1,45 @@
-# js_test
+# gdom
 
 [![Package Version](https://img.shields.io/hexpm/v/js_test)](https://hex.pm/packages/js_test)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/js_test/)
 
 ```sh
-gleam add js_test
+gleam add gdom
 ```
 ```gleam
-import js_test
+import gdom
 
 pub fn main() {
-  // TODO: An example of the project in use
+  let ps = {
+    use h1 <- r.try(new() |> select("div") |> first())
+    h1
+    |> new_from()
+    |> select("#id.class >")
+    |> all()
+  }
+
+  case ps {
+    Ok(list) -> {
+      io.debug(
+        list
+        |> l.map(text_content)
+        |> s.join(", "),
+      )
+      Nil
+    }
+    Error(InvalidSelector) -> {
+      io.debug("Invalid selector")
+      Nil
+    }
+    Error(NotFound) -> {
+      io.debug("Not found")
+      Nil
+    }
+  }
 }
 ```
 
-Further documentation can be found at <https://hexdocs.pm/js_test>.
+Further documentation can be found at <https://hexdocs.pm/gdom>.
 
 ## Development
 
